@@ -17,7 +17,7 @@ from sklearn.metrics import r2_score
 #-------
 N=1000 # number of data points
 x=np.random.rand(N,1) # where we evaluate function
-noise_amp=0.5 # amplitude of Gaussian noise
+noise_amp=0.3 # amplitude of Gaussian noise
 random_matrix = np.random.randn(N,1)
 
 t=np.exp(x)+noise_amp*random_matrix # noisy observations
