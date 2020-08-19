@@ -81,7 +81,7 @@ legend('Theory','Simulated');
 title('Probability of Positive Batches')
 
 %part 2 Nonadaptive test
-id=20; %my student id number ends in 20
+id=20; %my student id number ends in 20 - John
 y=squeeze(y_all(id,:)); % squeeze returns length-15 vector
 A=squeeze(A_all(id,:,:)); % returns 15x30 matrix
 A_list=squeeze(A_list_all(id,:,:)); % returns 30x3 matrix
@@ -95,7 +95,29 @@ for n = 1:length(y)
         end
        end
 end
-fprintf('Special Indexs: ');
+fprintf('Special Indexes: ');
+for i = 1:30
+    if pool(i) == 1
+        fprintf('%d ',i);
+    end
+end
+fprintf('\n');
+
+id=74; %my student id number ends in 74 - Nicholas
+y=squeeze(y_all(id,:)); % squeeze returns length-15 vector
+A=squeeze(A_all(id,:,:)); % returns 15x30 matrix
+A_list=squeeze(A_list_all(id,:,:)); % returns 30x3 matrix
+pool = ones(1,30);
+for n = 1:length(y)
+    if y(n) == 0
+        for m = 1:30
+            if A(n,m) == 1
+                pool(m) = 0;
+            end
+        end
+       end
+end
+fprintf('Special Indexes: ');
 for i = 1:30
     if pool(i) == 1
         fprintf('%d ',i);
