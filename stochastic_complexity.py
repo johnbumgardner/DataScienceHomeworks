@@ -26,3 +26,18 @@ for i in binary_sequence:
 	else:
 		numberDigits[1] += 1
 
+# define number of bins to be from 1 to N
+K = []
+for i in range(1,N+1):
+	K.append(i)
+
+# generate representation levels 1-N defined
+representation_level_dict = dict()
+for i in K:
+	rep_levels_for_instance_k = []
+	for j in range(1,i+1):
+		rep_levels_for_instance_k.append((j-.5)/j)
+	representation_level_dict[i] = rep_levels_for_instance_k
+
+
+
