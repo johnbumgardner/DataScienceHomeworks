@@ -1,5 +1,10 @@
+# John Bumgardner and Nicholas Himes
+# ECE 592-061
+# HW 2
 
 import random
+import numpy as np
+import math
 
 # consider N bit binary sequence X
 N = 500
@@ -12,7 +17,7 @@ binary_sequence = []
 # create a binary sequence from given theta
 for i in range(0,N):
 	val = random.uniform(0,1)
-	if(val > theta):
+	if(val < theta):
 		binary_sequence.append(1)
 	else:
 		binary_sequence.append(0)
@@ -38,6 +43,20 @@ for i in K:
 	for j in range(1,i+1):
 		rep_levels_for_instance_k.append((j-.5)/j)
 	representation_level_dict[i] = rep_levels_for_instance_k
+    
+# show what range of values for K makes sense
+# plot redundancy R(X,theta) 
+
+# horizontal axis is theta from 0->1
+hstep = 0.01 #CHANGE LATER 
+horizontalAxis = np.arange(0,1+hstep,hstep)
+
+# vertical axis varies number of bins K from 1 to N
+vstep = 1
+verticalAxis = np.arange(1,N+vstep,vstep)
+
+r_k = 1 # NEED TO IMPLEMENT
+Redundancy = math.log2(K) + N*(1-theta)*math.log2((1-theta)/(1-r_k)) + N*theta*math.log2(theta/r_k)                 
 
 
 
