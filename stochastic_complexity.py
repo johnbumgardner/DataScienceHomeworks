@@ -10,12 +10,8 @@ import matplotlib.pyplot as plt
 
 def closest(lst, K):    
     return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-K))] 
-      
-def get_redundancy(theta):
-	# consider N bit binary sequence X
-	N = 500
 
-	# empty list
+def get_string(N, theta):
 	binary_sequence = []
 
 	# create a binary sequence from given theta
@@ -26,6 +22,9 @@ def get_redundancy(theta):
 		else:
 			binary_sequence.append(0)
 
+	return binary_sequence
+
+def get_empirical_theta(binary_sequence):
 	# theta is technically unknown
 	# count number of ones and zeroes
 	numberDigits = [0,0]
@@ -34,71 +33,58 @@ def get_redundancy(theta):
 			numberDigits[0] += 1
 		else:
 			numberDigits[1] += 1
+	return 1.0*numberDigits[1] / (numberDigits[1] + numberDigits[0])
 
-	# define number of bins to be from 1 to N
-	K = []
-	for i in range(1,N+1):
-		K.append(i)
+def get_rep_level(estimated_theta, num_bins):
+	step_size = 1 / num_bins
+	val_low = 0
+	val_high = step_size
+	for i in range(num_bins):
+		if estimated_theta > val_low and estimated_theta < val_high:
+			return (i + .5) / num_bins
+		val_low += step_size
+		val_high += step_size
 
-	# generate representation levels 1-N defined
-	representation_level_dict = dict()
-	for i in K:
-		rep_levels_for_instance_k = []
-		for j in range(1,i+1):
-			rep_levels_for_instance_k.append((j-.5)/i)
-		representation_level_dict[i] = rep_levels_for_instance_k
-   
-	# find nearest representation level
-	r_k = []
-	to_find = numberDigits[1] / N
-	for i in representation_level_dict:
-		r_k.append(closest(representation_level_dict[i],to_find))
+def get_ones(binary_sequence):
+	num_ones = 0
+	for i in binary_sequence:
+		if i == 1:
+			num_ones += 1
+	return num_ones
 
-	
+def get_zeros(binary_sequence):
+	num_zeros = 0
+	for i in binary_sequence:
+		if i == 0:
+			num_zeros += 1
+	return num_zeros
 
+def get_total_length(K, rep_level, binary_sequence):
+	val = math.log2(K)
+	val -= get_zeros(binary_sequence) * math.log2(1-rep_level)
+	val -= get_ones(binary_sequence) * math.log2(rep_level)
+	return val
 
+def get_true_entropy(theta):
+	return -theta * math.log2(theta) - (1-theta)*math.log2(1-theta)
 
-
-	# show what range of values for K makes sense
-	# plot redundancy R(X,theta) 
-
-	# horizontal axis is theta from 0->1
-	# hstep = 0.01 #CHANGE LATER 
-	# horizontalAxis = np.arange(0,1+hstep,hstep)
-
-	# vertical axis varies number of bins K from 1 to N
-	# vstep = 1
-	# verticalAxis = np.arange(1,N+vstep,vstep)
-
-	#r_k = 1 # NEED TO IMPLEMENT
-	current_level = 0
-	redundancy = []
-	for r in r_k:
-		value = math.log2(K[current_level])
-		value += N*(1-theta)*math.log2((1-theta)/(1-r))
-		value += N*theta*math.log2(theta/r)
-		redundancy.append(value)
-		current_level = current_level + 1                 
-
-	return redundancy
-
-
+def get_redundancy(expiriment, theory):
+	return expiriment - theory
 
 def main():
-
-	#go thru some theta values
-	thetas = []
-	for i in range(1,100):
-		thetas.append(i/100)
-
-	redundancy_matrix = []
-	for i in thetas:
-		redundancy_matrix.append(get_redundancy(i))
-
-	arr = np.array(redundancy_matrix)
-
-	plt.matshow(arr)
-	plt.show()
+	size = 100
+	for i in range(1,10):
+		theta = i / 10.0
+		string = get_string(size, theta)
+		estimated_theta = get_empirical_theta(string)
+		K = 1
+		while(K < size):
+			r_k = get_rep_level(estimated_theta, K)
+			true_ent = get_true_entropy(theta)
+			measured_ent = get_total_length(K, r_k, string)
+			redundancy = get_redundancy(measured_ent, true_ent)
+			print("theta = " + str(theta) + " | K = " + str(K) + " | redundancy = " + str(redundancy))
+			K += 10
 
 
 
