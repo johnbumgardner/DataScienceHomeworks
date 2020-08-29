@@ -3,10 +3,8 @@
 # HW 2
 
 import random
-import numpy as np
 import math
-from matplotlib.pyplot import matshow
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 
 def closest(lst, K):    
     return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-K))] 
@@ -72,21 +70,40 @@ def get_redundancy(expiriment, theory):
 	return expiriment - theory
 
 def main():
-	size = 100
+	size = 1000
+	optimal = math.sqrt(size)
+	k_list = []
+	redundancy_list = []
 	for i in range(1,10):
 		theta = i / 10.0
 		string = get_string(size, theta)
 		estimated_theta = get_empirical_theta(string)
 		K = 1
 		while(K < size):
+			k_list.append(K)
 			r_k = get_rep_level(estimated_theta, K)
 			true_ent = get_true_entropy(theta)
 			measured_ent = get_total_length(K, r_k, string)
 			redundancy = get_redundancy(measured_ent, true_ent)
-			print("theta = " + str(theta) + " | K = " + str(K) + " | redundancy = " + str(redundancy))
+			redundancy_list.append(redundancy)
+			#print("theta = " + str(theta) + " | K = " + str(K) + " | redundancy = " + str(redundancy))
 			K += 10
 
+		ymin = min(redundancy_list)
+		xpos = redundancy_list.index(ymin)
+		xmin = k_list[xpos]
+		plt.annotate('local min', xy=(xmin, ymin), xytext=(xmin, ymin+5),
+            arrowprops=dict(facecolor='black', shrink=0.01),
+            )
+		plt.plot(k_list, redundancy_list)
+		plt.xlabel('K values')
+		plt.ylabel('Redundancy')
+		plt.title('Theta = ' + str(theta) + 'Theoretical optimal = ' + str(optimal))
+		plt.show()
+		k_list.clear()
+		redundancy_list.clear()
 
 
+	
 main()
 
