@@ -52,7 +52,7 @@ for bn in range(N):
 if (cl3 < cl4):
     print("The coding length of Hypothesis 3 is shorter!")
 else:
-    print("The coding length of Hypothesis 3 is shorter!")
+    print("The coding length of Hypothesis 4 is shorter!")
 print("CL3: {}, CL4: {}".format(cl3, cl4))
 
 
