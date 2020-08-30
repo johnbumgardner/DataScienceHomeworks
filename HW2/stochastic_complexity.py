@@ -1,6 +1,7 @@
 # John Bumgardner and Nicholas Himes
 # ECE 592-061
 # HW 2
+# Question 1
 
 import random
 import math
