@@ -1,6 +1,7 @@
 # John Bumgardner and Nicholas Himes
 # ECE 592-061
 # HW 2
+# Question 1
 
 import random
 import math
@@ -87,7 +88,7 @@ def main():
             redundancy = get_redundancy(measured_ent, true_ent, size)
             redundancy_list.append(redundancy)
             #print("theta = " + str(theta) + " | K = " + str(K) + " | redundancy = " + str(redundancy))
-            K += 10
+            K += 1
 
         ymin = min(redundancy_list)
         xpos = redundancy_list.index(ymin)
