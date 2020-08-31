@@ -20,27 +20,29 @@ cl4 = 1
 
 # Part B
 N = 1000 #Number of data points
-cl3 += 1.5*math.log2(N) #From Rissanen's MDL Theory
-cl4 += 2*math.log2(N)
+cl3 += 0.5*p3.order*math.log2(N) #From Rissanen's MDL Theory
+cl4 += 0.5*p4.order*math.log2(N)
 
 # Part C
 #  t_n = W^T * x_n + noise_n
 wT = np.random.rand(N,1).transpose() #Column vector of weights
 x = np.random.rand(N,1) #Input variables - given
 
-variance = 1 #Fix
+var_sum = 0
+for noise_n in range(N):
+    var_sum += noise_n**2
+variance = (1/N) * var_sum
 
 x_n = np.array([])
 for i in range(N):
     x_n = np.append(x_n,x[i] + f(i,variance))
 
-#delta = bin width
 #Pb = delta * f(delta * b), where f is the noise function?
 
 #t_n = wT * x_n + noise_n dont even need to implement?
 
 sum3 = 0
-delta = .1
+delta = .1 #delta = bin width
 for bn in range(0,100):
 	bn_dec = bn/100
 	sum3 += math.log2(delta * f(delta * bn_dec, variance))
