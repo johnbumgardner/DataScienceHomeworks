@@ -6,34 +6,57 @@
 # Your role is to develop software (Matlab or Python) that selects the optimal model order and
 # outputs the overall coding length for both possible model orders. 
 
+def f(noise_n, variance):
+    return (1/ math.sqrt(2*math.pi*variance)) * math.exp(-(noise_n)**2 / (2*variance**2))
+
 import numpy as np
 import math
 
-#  t_n = W^T * x_n + noise_n
-
-
-N=1000 # number of data points
-x=np.random.rand(N,1) # where we evaluate function
-noise_amp=0.3 # amplitude of Gaussian noise
-random_matrix = np.random.randn(N,1)
-
-t=np.cos(2*np.pi*x)+noise_amp*random_matrix # noisy observations
-
+# Part A
 p3 = np.poly1d([1,2,7,9]) #Hypothesis 3: x^3 + 2x^2 + 7x + 9
 p4 = np.poly1d([7,0,1,11,2]) #Hypothesis 4: 7x^4 + x^2 + 11x + 2
+cl3 = 1 #Flag bit to distinguish between H3 or H4
+cl4 = 1
 
-counter_3 = 0
-counter_4 = 0
+# Part B
+N = 1000 #Number of data points
+cl3 += 1.5*math.log2(N) #From Rissanen's MDL Theory
+cl4 += 2*math.log2(N)
 
-counter_3 += math.ceil(.5 * math.log2(N))
-counter_4 += math.ceil(1.5 * math.log2(N))
+# Part C
+#  t_n = W^T * x_n + noise_n
+wT = np.random.rand(N,1).transpose() #Column vector of weights
+x = np.random.rand(N,1) #Input variables - given
 
-hypothesis_3 = []
-hypothesis_4 = []
+variance = 100 #Fix
 
-hypothesis_3.append(0)
-hypothesis_4.append(1)
+x_n = np.array([])
+for i in range(N):
+    x_n = np.append(x_n,x[i] + f(i,variance))
 
-print("hypothesis 3: " + str(counter_3))
-print("hypothesis 4: " + str(counter_4))
+#delta = bin width
+#Pb = delta * f(delta * b), where f is the noise function?
+
+#t_n = wT * x_n + noise_n dont even need to implement?
+
+sum3 = 0
+delta = 1
+for bn in range(N):
+    sum3 += math.log2(delta * f(delta * bn, variance))
+    sum4 = sum3 #?????? Are both polys the same code length in part c?
+    
+#cl3 -= sum3
+#cl4 -= sum4
+
+# Now compare coding lengths and choose the better hypothesis
+if (cl3 < cl4):
+    print("The coding length of Hypothesis 3 is shorter!")
+else:
+    print("The coding length of Hypothesis 4 is shorter!")
+print("CL3: {}, CL4: {}".format(cl3, cl4))
+
+
+
+
+
 
