@@ -28,7 +28,7 @@ cl4 += 2*math.log2(N)
 wT = np.random.rand(N,1).transpose() #Column vector of weights
 x = np.random.rand(N,1) #Input variables - given
 
-variance = 100 #Fix
+variance = 1 #Fix
 
 x_n = np.array([])
 for i in range(N):
@@ -40,13 +40,14 @@ for i in range(N):
 #t_n = wT * x_n + noise_n dont even need to implement?
 
 sum3 = 0
-delta = 1
-for bn in range(N):
-    sum3 += math.log2(delta * f(delta * bn, variance))
-    sum4 = sum3 #?????? Are both polys the same code length in part c?
+delta = .1
+for bn in range(0,100):
+	bn_dec = bn/100
+	sum3 += math.log2(delta * f(delta * bn_dec, variance))
+	sum4 = sum3
     
-#cl3 -= sum3
-#cl4 -= sum4
+cl3 -= sum3
+cl4 -= sum4
 
 # Now compare coding lengths and choose the better hypothesis
 if (cl3 < cl4):
