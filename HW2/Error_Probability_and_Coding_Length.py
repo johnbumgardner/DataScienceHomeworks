@@ -11,6 +11,8 @@ def f(noise_n, variance):
 
 import numpy as np
 import math
+import random
+import statistics 
 
 # Part A
 p3 = np.poly1d([1,2,7,9]) #Hypothesis 3: x^3 + 2x^2 + 7x + 9
@@ -55,7 +57,6 @@ if (cl3 < cl4):
 else:
     print("The coding length of Hypothesis 4 is shorter!")
 print("CL3: {}, CL4: {}".format(cl3, cl4))
-
 
 
 
