@@ -34,6 +34,7 @@ var_sum = 0
 for noise_n in range(N):
     var_sum += noise_n**2
 variance = (1/N) * var_sum
+print("Variance: {}".format(variance))
 
 x_n = np.array([])
 for i in range(N):
@@ -44,7 +45,7 @@ for i in range(N):
 #t_n = wT * x_n + noise_n dont even need to implement?
 
 sum3 = 0
-delta = .1 #delta = bin width
+delta = 0.1 #delta = bin width
 for bn in range(0,100):
 	bn_dec = bn/100
 	sum3 += math.log2(delta * f(delta * bn_dec, variance))
