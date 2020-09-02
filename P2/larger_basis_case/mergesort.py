@@ -53,7 +53,7 @@ def mergesort(x):
 
 
 size_arr = [10, 100, 1000, 10000, 100000, 1000000]
-N = 10 # iterations to average
+N = 5 # iterations to average
 
 #populate arrays
 for i in size_arr:
@@ -69,4 +69,5 @@ for i in size_arr:
         mergesort(array)
         end = time.time()
         sum_of_times += end - start
-    print("size: " + str(len(array)) + " elapsed time to sort: " + str(sum_of_times / N))
+    mergesortCalls = round(mergesortCalls / N) #Take average calls amount
+    print("size: " + str(len(array)) + " elapsed time to sort: " + str(sum_of_times / N) + ", Mergesort Calls: {}".format(mergesortCalls))
