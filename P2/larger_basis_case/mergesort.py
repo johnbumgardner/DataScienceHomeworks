@@ -50,19 +50,20 @@ def mergesort(x):
 
 # In[ ]:
 
-#some array sizes to use
+
 size_arr = [10, 100, 1000, 10000, 100000, 1000000]
+N = 10 # iterations to average
 
 #populate arrays
 for i in size_arr:
-    list = []
-    for j in range(i):
-        list.append(random.randint(0, 100))
-    array = np.array(list)
-    start = time.time()
-    mergesort(array)
-    end = time.time()
-    print("size: " + str(len(array)) + " elapsed time to sort: " + str(end - start))
-
-
-
+    sum_of_times = 0
+    for h in range(N):
+        list = []
+        for j in range(i):
+            list.append(random.randint(0, 100))
+        array = np.array(list)
+        start = time.time()
+        mergesort(array)
+        end = time.time()
+        sum_of_times += end - start
+    print("size: " + str(len(array)) + " elapsed time to sort: " + str(sum_of_times / N))
