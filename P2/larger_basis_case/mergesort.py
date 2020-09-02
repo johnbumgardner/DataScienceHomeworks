@@ -15,9 +15,10 @@ import random
 
 # In[ ]:
 
-
 def mergesort(x):
-
+    global mergesortCalls
+    mergesortCalls += 1
+    
     if len(x)<2: # x is short --> already sorted --> return it
         y=x
         return y
@@ -25,7 +26,7 @@ def mergesort(x):
     elif (len(x) == 2): #A larger basis case of length 2
         y=x
         if (y[0] > y[1]): #If the order needs to be swapped...
-           y[0], y[1] = y[1], y[0] #Tuple swap the array indexes 
+            y[0], y[1] = y[1], y[0] #Tuple swap the array indexes 
 
         #If the first index was already less than or = to the second, just return y
         return y
@@ -56,7 +57,9 @@ N = 10 # iterations to average
 
 #populate arrays
 for i in size_arr:
+
     sum_of_times = 0
+    mergesortCalls = 0
     for h in range(N):
         list = []
         for j in range(i):
