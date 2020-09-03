@@ -27,9 +27,9 @@ cl4 += 0.5*p4.order*math.log2(N)
 
 # Part C
 #  t_n = W^T * x_n + noise_n
-w3T = np.array([[1,2,7,9]])
+w3T = np.array([[1,2,7,9]]) #Row vector of weights
 w4T = np.array([[7,0,1,11,2]])
-#wT = np.random.rand(N,1).transpose() #Column vector of weights
+#wT = np.random.rand(N,1).transpose() 
 x = np.random.rand(N,1) #Input variables - given
 
 var_sum = 0
@@ -45,6 +45,13 @@ for i in range(N):
 #Pb = delta * f(delta * b), where f is the noise function?
 
 #t_n = wT * x_n + noise_n dont even need to implement?
+t_n3 = np.array([])
+for i in range(N):
+    t_n3 = np.append(t_n3, w3T * x_n[i] + f(i,variance))
+    
+t_n4 = np.array([])
+for i in range(N):
+    t_n4 = np.append(t_n4, w4T * x_n[i] + f(i,variance))
 
 sum3 = 0
 delta = 0.1 #delta = bin width
