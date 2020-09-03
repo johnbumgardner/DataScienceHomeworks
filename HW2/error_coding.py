@@ -44,7 +44,6 @@ for i in range(N):
 
 #Pb = delta * f(delta * b), where f is the noise function?
 
-#t_n = wT * x_n + noise_n dont even need to implement?
 t_n3 = np.array([])
 for i in range(N):
     t_n3 = np.append(t_n3, w3T * x_n[i] + f(i,variance))
@@ -52,6 +51,7 @@ for i in range(N):
 t_n4 = np.array([])
 for i in range(N):
     t_n4 = np.append(t_n4, w4T * x_n[i] + f(i,variance))
+
 
 sum3 = 0
 delta = 0.1 #delta = bin width
