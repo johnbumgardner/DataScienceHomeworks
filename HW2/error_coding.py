@@ -6,7 +6,7 @@
 # Your role is to develop software (Matlab or Python) that selects the optimal model order and
 # outputs the overall coding length for both possible model orders. 
 
-def f(noise_n, variance):
+def f(noise_n, variance): #This is our noise function that uses the formula from the document
     return (1/ math.sqrt(2*math.pi*variance)) * math.exp(-(noise_n)**2 / (2*variance**2))
 
 import numpy as np
@@ -26,25 +26,24 @@ cl3 += 0.5*p3.order*math.log2(N) #From Rissanen's MDL Theory
 cl4 += 0.5*p4.order*math.log2(N)
 
 # Part C
-#  t_n = W^T * x_n + noise_n
+# t_n = W^T * x_n + noise_n
 w3T = np.array([[1,2,7,9]]) #Row vector of weights
 w4T = np.array([[7,0,1,11,2]])
-#wT = np.random.rand(N,1).transpose() 
+
 x = np.random.rand(N,1) #Input variables - given
 
-var_sum = 0
+var_sum = 0 #Find variance based on the number of N
 for noise_n in range(N):
     var_sum += noise_n**2
 variance = (1/N) * var_sum
 print("Variance: {}".format(variance))
 
-x_n = np.array([])
+x_n = np.array([]) #Create a row vector of length N for X_n based on the random X + noise
 for i in range(N):
     x_n = np.append(x_n,x[i] + f(i,variance))
 
-#Pb = delta * f(delta * b), where f is the noise function?
-
-#t_n = wT * x_n + noise_n dont even need to implement?
+# t_n = W^T * x_n + noise_n
+# Make a t_n for each Hypothesis since the weights and polys are different
 t_n3 = np.array([])
 for i in range(N):
     t_n3 = np.append(t_n3, w3T * x_n[i] + f(i,variance))
@@ -53,14 +52,14 @@ t_n4 = np.array([])
 for i in range(N):
     t_n4 = np.append(t_n4, w4T * x_n[i] + f(i,variance))
 
-sum3 = 0
+sum3 = 0 #Need to go through the bins and make a sum of coding length
 delta = 0.1 #delta = bin width
 for bn in range(0,100):
 	bn_dec = bn/100
 	sum3 += math.log2(delta * f(delta * bn_dec, variance))
 	sum4 = sum3
     
-cl3 -= sum3
+cl3 -= sum3 #The sum was negated in the document, so subtract from the existing coding length
 cl4 -= sum4
 
 # Now compare coding lengths and choose the better hypothesis
