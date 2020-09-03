@@ -27,7 +27,9 @@ cl4 += 0.5*p4.order*math.log2(N)
 
 # Part C
 #  t_n = W^T * x_n + noise_n
-wT = np.random.rand(N,1).transpose() #Column vector of weights
+w3T = np.array([[1,2,7,9]])
+w4T = np.array([[7,0,1,11,2]])
+#wT = np.random.rand(N,1).transpose() #Column vector of weights
 x = np.random.rand(N,1) #Input variables - given
 
 var_sum = 0
