@@ -44,7 +44,7 @@ for i in range(N):
 
 #Pb = delta * f(delta * b), where f is the noise function?
 
-#t_n = wT * x_n + noise_n dont even need to implement?
+#t_n = wT * x_n + noise_n 
 
 sum3 = 0
 delta = 0.1 #delta = bin width
