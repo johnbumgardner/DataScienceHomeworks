@@ -21,16 +21,27 @@ cl3 = 1 #Flag bit to distinguish between H3 or H4
 cl4 = 1
 
 # Part B
-N = 1000 #Number of data points
+N = 500 #Number of data points
 cl3 += 0.5*p3.order*math.log2(N) #From Rissanen's MDL Theory
 cl4 += 0.5*p4.order*math.log2(N)
 
 # Part C
 # t_n = W^T * x_n + noise_n
-w3T = np.array([[1,2,7,9]]) #Row vector of weights
-w4T = np.array([[7,0,1,11,2]])
 
-x = np.random.rand(N,1) #Input variables - given
+x3 = np.array([])
+x4 = np.array([])
+for i in range(N):
+    x3 = np.append(x3,p3(i))
+    x4 = np.append(x4,p4(i))
+
+w3T = np.array([]) #Column vector of weights
+w4T = np.array([])
+for item in x3:
+    w3T = np.append(w3T, item/sum(x3))
+for item in x4:
+    w4T = np.append(w4T, item/sum(x4))
+w3T = w3T.reshape(1, -1) #Now a row vector of weights
+w4T = w4T.reshape(1, -1)
 
 var_sum = 0 #Find variance based on the number of N
 for noise_n in range(N):
@@ -38,19 +49,22 @@ for noise_n in range(N):
 variance = (1/N) * var_sum
 print("Variance: {}".format(variance))
 
-x_n = np.array([]) #Create a row vector of length N for X_n based on the random X + noise
+x_n3 = np.array([]) #Create a row vector of length N for X_n based on the random X + noise
 for i in range(N):
-    x_n = np.append(x_n,x[i] + f(i,variance))
+    x_n3 = np.append(x_n3,x3[i] + f(i,variance))
+x_n4 = np.array([]) #Create a row vector of length N for X_n based on the random X + noise
+for i in range(N):
+    x_n4 = np.append(x_n4,x4[i] + f(i,variance))
 
 # t_n = W^T * x_n + noise_n
 # Make a t_n for each Hypothesis since the weights and polys are different
 t_n3 = np.array([])
 for i in range(N):
-    t_n3 = np.append(t_n3, w3T * x_n[i] + f(i,variance))
+    t_n3 = np.append(t_n3, w3T[0][i] * x_n3[i] + f(i,variance))
     
 t_n4 = np.array([])
 for i in range(N):
-    t_n4 = np.append(t_n4, w4T * x_n[i] + f(i,variance))
+    t_n4 = np.append(t_n4, w4T[0][i] * x_n4[i] + f(i,variance))
 
 sum3 = 0 #Need to go through the bins and make a sum of coding length
 delta = 0.1 #delta = bin width
