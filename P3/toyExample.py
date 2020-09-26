@@ -13,7 +13,6 @@ def toyStockSimulator(h):
     S1p = [1]*(N+1)
     S2p = [1,2]*int((N/2)+1)
     
-    #h = [0.5,0.5] #Stock proportions
     money = 1 #Start with $1
     
     r = [money] #Returns
