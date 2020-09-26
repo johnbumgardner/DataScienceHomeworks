@@ -6,13 +6,13 @@ import numpy as np
 
 
 def compute_gains(asset1, asset2, h1, h2):
-	prev_price_asset_1 = asset1[0]
-	prev_price_asset_2 = asset2[0]
+	prev_price_asset_1 = float(asset1[0])
+	prev_price_asset_2 = float(asset2[0])
 	x1 = []
 	x2 = []
 	for i in range(1, len(asset1)):
-		curr_price_asset_1 = asset1[i]
-		curr_price_asset_2 = asset2[i]
+		curr_price_asset_1 = float(asset1[i])
+		curr_price_asset_2 = float(asset2[i])
 		gain_1 = curr_price_asset_1 - prev_price_asset_1
 		gain_2 = curr_price_asset_2 - prev_price_asset_2
 		x1.append(gain_1)
