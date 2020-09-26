@@ -8,25 +8,28 @@ Created on Sat Sep 26 14:38:30 2020
 
 import numpy as np
 import pandas as pd
+import itertools
 
 #%% Function
-def assetPrices(PricesDF, h):
+def assetPrices(pricesDF, h):
     N = 2517 #Size of the Stanford Dataset
-    
-    S1p = [1]*(N+1)
-    S2p = [1,2]*int((N/2)+1)
     
     money = 1 #Start with $1
     
     r = [money] #Returns
     #Start of each day, invest h proportions of total money into the stocks
     
-    for day in range(1,N+1): #Start on the second day
-        Xd1 = S1p[day] / S1p[day-1]
-        Xd2 = S2p[day] / S2p[day-1]
-        r1 = Xd1 * h[0] * money
-        r2 = Xd2 * h[1] * money
-        money = r1 + r2
+    for day in range(1, N):
+        currentCol = 0 #Keep track of stock index so h can be called
+        rDayTotals = []
+        for stock in pricesDF:
+            #pricesDF[stock] is the vector of prices
+            
+            Xd = pricesDF[stock][day] / pricesDF[stock][day-1]
+            Rd = Xd * h[currentCol] * money
+            rDayTotals.append(Rd) 
+            currentCol += 1
+        money = sum(rDayTotals) #Done going through all given stocks on that day, add it up to get new money amount
         r.append(money)
         
     return r
@@ -35,11 +38,30 @@ def assetPrices(PricesDF, h):
 df = pd.read_csv("asset_prices.csv")
 
 #%% Task 2 - Compute the optimal h for D = 2.
-h = [0.5, 0.5]
-r = assetPrices(df.iloc[:,:2]) #Give it the first two columns of stocks
-
-
+D = 2 #Select the first D stocks
+hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
+rStorage = []
+for h in hPossibilities:
+    rDays = assetPrices(df.iloc[:,:D], h) #Give it the first two columns of stocks
+    finalR = rDays[-1]
+    rStorage.append(finalR)
+    
+maxMoney = max(rStorage)
+maxIndex = rStorage.index(maxMoney)
+winningPair = hPossibilities[maxIndex]
+print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))
 
 
 #%% Task 3 - Compute the optimal h for D = 3.
-
+D = 3 #Select the first D stocks
+hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
+rStorage = []
+for h in hPossibilities:
+    rDays = assetPrices(df.iloc[:,:D], h) #Give it the first three columns of stocks
+    finalR = rDays[-1]
+    rStorage.append(finalR)
+    
+maxMoney = max(rStorage)
+maxIndex = rStorage.index(maxMoney)
+winningPair = hPossibilities[maxIndex]
+print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))
