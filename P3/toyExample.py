@@ -6,6 +6,7 @@ Created on Thu Sep 24 16:29:35 2020
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 #%% Given Case
 def toyStockSimulator(h):
@@ -43,4 +44,10 @@ maxMoney = max(rStorage)
 maxIndex = rStorage.index(maxMoney)
 winningPair = [maxIndex/1000 , (1000-maxIndex)/1000]
 print("Optimal h was {} with ${}".format(winningPair, maxMoney))
-    
+
+plt.figure(1)
+plt.plot(np.linspace(0,1,1001), rStorage)
+plt.xlabel('First h index')
+plt.ylabel('R')
+plt.title("Toy Example")
+
