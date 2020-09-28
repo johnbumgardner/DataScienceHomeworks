@@ -9,6 +9,7 @@ Created on Sat Sep 26 14:38:30 2020
 import numpy as np
 import pandas as pd
 import itertools
+import matplotlib.pyplot as plt
 
 #%% Function
 def assetPrices(pricesDF, h):
@@ -51,6 +52,12 @@ maxIndex = rStorage.index(maxMoney)
 winningPair = hPossibilities[maxIndex]
 print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))
 
+plt.figure(1)
+plt.plot(np.linspace(0,1,21), rStorage)
+plt.xlabel('First h index')
+plt.ylabel('R')
+plt.title("D=2")
+
 
 #%% Task 3 - Compute the optimal h for D = 3.
 D = 3 #Select the first D stocks
@@ -65,3 +72,18 @@ maxMoney = max(rStorage)
 maxIndex = rStorage.index(maxMoney)
 winningPair = hPossibilities[maxIndex]
 print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))
+
+#Can't plot this because four variables is too many dimensions
+#r = f(a,b,c)
+
+plt.figure(2)
+plt.plot(df.iloc[:,0])
+plt.xlabel("Day")
+plt.ylabel("Stock Price")
+plt.title("Stock 0: American Express")
+
+plt.figure(3)
+plt.plot(df.iloc[:,2])
+plt.xlabel("Day")
+plt.ylabel("Stock Price")  
+plt.title("Stock 2: BP")
