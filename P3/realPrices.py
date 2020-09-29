@@ -35,20 +35,22 @@ def assetPrices(pricesDF, h):
         
     return r
 
-def linsearch(data):
-    x=np.arange(0.01,10.0002,0.0001)# grid for visualizing signal
-    f=3*x-np.log(x) # signal values
+def indices(a, func):
+    return [i for (i, val) in enumerate(a) if func(val)]
 
-    fig = plt.figure(figsize=(8, 8))
-    ax = fig.add_subplot(1, 1, 1, aspect=0.25)
-    ax.plot(x,f)
+def linsearch(data, D):
+    #data = grid for visualizing signal
+    f=data-np.log(data) # signal values
 
+    plt.figure(figsize=(8, 8))
+    plt.title("Linear Search, D={}".format(D))
+    plt.plot(data,f)
 
     #-------
     # optimize
     #-------
-    xmax=np.max(x)+ 0.9
-    xmin=np.min(x)
+    xmax=np.max(data)
+    xmin=np.min(data)
 
     for iter in range(1,11):
         grid_here=np.arange(xmin,xmax,(xmax-xmin)/10)
@@ -116,7 +118,6 @@ plt.ylabel("Stock Price")
 plt.title("Stock 2: BP")
 
 
-
 D = 4 #Select the first D stocks
 hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
 rStorage = []
@@ -127,3 +128,33 @@ for h in hPossibilities:
 maxIndex = rStorage.index(maxMoney)
 winningPair = hPossibilities[maxIndex]
 print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))    
+
+#%% Linear Search
+
+D = 2 #Select the first D stocks
+hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
+rStorage = []
+for h in hPossibilities:
+    rDays = assetPrices(df.iloc[:,:D], h) #Give it the first two columns of stocks
+    finalR = rDays[-1]
+    rStorage.append(finalR)
+
+maxMoney = max(rStorage)
+maxIndex = rStorage.index(maxMoney)
+linsearch(rStorage, D)
+convexMaxIndex = np.argmax(rStorage - np.log(rStorage))
+print(maxIndex, convexMaxIndex)
+
+D = 3 #Select the first D stocks
+hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
+rStorage = []
+for h in hPossibilities:
+    rDays = assetPrices(df.iloc[:,:D], h) #Give it the first three columns of stocks
+    finalR = rDays[-1]
+    rStorage.append(finalR)
+    
+maxMoney = max(rStorage)
+maxIndex = rStorage.index(maxMoney) 
+linsearch(rStorage, D)
+convexMaxIndex = np.argmax(rStorage - np.log(rStorage))
+print(maxIndex, convexMaxIndex)
