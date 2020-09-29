@@ -35,6 +35,33 @@ def assetPrices(pricesDF, h):
         
     return r
 
+def linsearch(data):
+    x=np.arange(0.01,10.0002,0.0001)# grid for visualizing signal
+    f=3*x-np.log(x) # signal values
+
+    fig = plt.figure(figsize=(8, 8))
+    ax = fig.add_subplot(1, 1, 1, aspect=0.25)
+    ax.plot(x,f)
+
+
+    #-------
+    # optimize
+    #-------
+    xmax=np.max(x)+ 0.9
+    xmin=np.min(x)
+
+    for iter in range(1,11):
+        grid_here=np.arange(xmin,xmax,(xmax-xmin)/10)
+        fhere=3*grid_here-np.log(grid_here) # compute function
+        location_min = indices(fhere, lambda n: n == np.min(fhere))# index where f is minimal 
+        min_loc = location_min[0]+1
+        next_min = np.max((min_loc-2,1)) # compute indices for next iteration
+        next_max=np.min((min_loc+2,len(grid_here)))
+        xmin=grid_here[next_min-1] # actual edges for next iteration
+        xmax=grid_here[next_max-1]
+        print ('xmin='+str((xmin+xmax)/2) + ', fmin=' +str(fhere[location_min][0]) + ', interval width=' +str(xmax-xmin) + '\n')
+        
+
 #%% Import Data
 df = pd.read_csv("asset_prices.csv")
 
@@ -87,3 +114,16 @@ plt.plot(df.iloc[:,2])
 plt.xlabel("Day")
 plt.ylabel("Stock Price")  
 plt.title("Stock 2: BP")
+
+
+
+D = 4 #Select the first D stocks
+hPossibilities = [i for i in itertools.product(np.linspace(0,1,21), repeat=D) if (sum(i)==1)]
+rStorage = []
+for h in hPossibilities:
+    rDays = assetPrices(df.iloc[:,:D], h) #Give it the first three columns of stocks
+    finalR = rDays[-1]
+    rStorage.append(finalR)
+maxIndex = rStorage.index(maxMoney)
+winningPair = hPossibilities[maxIndex]
+print("Optimal h at D={} was {} with ${}".format(D, winningPair, maxMoney))    
