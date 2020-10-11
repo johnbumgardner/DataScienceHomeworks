@@ -15,5 +15,5 @@ Homework and Project codes for ECE 592
 | 1        | group_testing.m 				|
 | 2        | mergesort.py merge.py                      |
 | 3        | toyExample.py realPrices.py                |
-| 4        | N/A                                    	|
+| 4        | imageCompress.py                                    	|
 | 5        | N/A                                    	|
