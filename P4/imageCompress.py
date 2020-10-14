@@ -8,7 +8,7 @@ Created on Sun Oct 11 17:11:23 2020
 
 import matplotlib.image as mpimg 
 import matplotlib.pyplot as plt
-import numpy as np
+from sklearn import cluster
 
 #%% Task 1: Load an Image
 
@@ -42,4 +42,41 @@ while ((x < M) and (y < M)):
 #Now cluster the patches
 R = 1 #Rate is 1
 C = 2**(R*(P**2))
-clusters = np.split(np.array(patches), C)
+
+#These next 6 lines take about 3 minutes to run since the picture is large
+x, y, z = img.shape
+img2D = img.reshape(x*y, z)
+kmeansCluster = cluster.KMeans(n_clusters = C)
+kmeansCluster.fit(img2D)
+clusterCenters = kmeansCluster.cluster_centers_
+clusterLabels = kmeansCluster.labels_
+
+plt.figure(3)
+plt.title("Image after Clustering")
+clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
+plt.imshow(clusteredImg)
+
+plt.figure(4)
+plt.subplot(1, 2, 1)
+plt.title("Part of Original Image")
+plt.imshow(img[500:700, 500:700])
+
+plt.subplot(1, 2, 2)
+plt.title("Part of Quantized Image")
+plt.imshow(clusteredImg[500:700, 500:700])
+
+
+#%% Task 3 - Rate vs. Distortion
+
+
+
+
+#%% Task 4 - Patch Size
+
+
+
+#%% Task 5 - Better Compression
+
+
+
+
