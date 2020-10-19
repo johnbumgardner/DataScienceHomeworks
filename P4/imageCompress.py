@@ -8,6 +8,7 @@ Created on Sun Oct 11 17:11:23 2020
 
 import matplotlib.image as mpimg 
 import matplotlib.pyplot as plt
+
 from sklearn import cluster
 from collections import Counter
 import math
@@ -69,7 +70,7 @@ plt.imshow(clusteredImg[500:700, 500:700])
 
 
 #%% Task 3 - Rate vs. Distortion
-
+os.system('sudo pip install scikit-learn')
 
 
 
