@@ -13,6 +13,17 @@ from sklearn import cluster
 from collections import Counter
 import math
 
+#%% Distortion
+def distortion(x_orig, x_new, M, N):
+    factor = 1 / M * N
+    sum = 0
+    for i in range(0, M):
+        for j in range(0, N):
+            sum += (x_orig[i][j] - x_new[i][j])^2
+
+    return factor * sum    
+
+
 #%% Task 1: Load an Image
 
 img = mpimg.imread('mountain.jpg') 
@@ -70,12 +81,67 @@ plt.imshow(clusteredImg[500:700, 500:700])
 
 
 #%% Task 3 - Rate vs. Distortion
-os.system('sudo pip install scikit-learn')
+#range of coding rates
+P = 2 #Initial patch size, so 2x2 = 4 pixels per patch
+patches = []
+x = 0 #Count up through the patches, highest index will be M-1 = N-1
+y = 0
+while ((x < M) and (y < M)):
+    partition = img[x:x+P, y:y+P]
+    patches.append(partition)
+    
+    x += P
+    if (x >= M):
+        x = 0
+        y += P
 
+R_list = [2, 4, 6, 8, 10]
+D_list = []
+C_list = []
+for i in R_list:
+    new_C = 2**(i*(P**2))
+    C_list.append(new_C)
+    x, y, z = img.shape
+    img2D = img.reshape(x*y, z)
+    kmeansCluster = cluster.KMeans(n_clusters = new_C)
+    kmeansCluster.fit(img2D)
+    clusterCenters = kmeansCluster.cluster_centers_
+    clusterLabels = kmeansCluster.labels_
 
+    clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
+    D_list.append(distortion(img, clusteredImg, M, N))
 
 #%% Task 4 - Patch Size
+P_set = [2 ,4 ,8 ,16] #Initial patch size, so 2x2 = 4 pixels per patch
+patch_P = []
+patches = []
+for P in P_set:
+    x = 0 #Count up through the patches, highest index will be M-1 = N-1
+    y = 0
+    while ((x < M) and (y < M)):
+        partition = img[x:x+P, y:y+P]
+        patches.append(partition)
+    
+        x += P
+        if (x >= M):
+            x = 0
+            y += P
+    patch_P.append(patches)
+R = 1
+D_list = []
+C_list = []
+for P in P_set:
+    new_C = 2**(R*(P**2))
+    C_list.append(new_C)
+    x, y, z = img.shape
+    img2D = img.reshape(x*y, z)
+    kmeansCluster = cluster.KMeans(n_clusters = new_C)
+    kmeansCluster.fit(img2D)
+    clusterCenters = kmeansCluster.cluster_centers_
+    clusterLabels = kmeansCluster.labels_
 
+    clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
+    D_list.append(distortion(img, clusteredImg, M, N))
 
 
 #%% Task 5 - Better Compression
