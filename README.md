@@ -5,7 +5,7 @@ Homework and Project codes for ECE 592
 | 1        | cosine_wave_fit.py, exponential_fit.py 	|
 | 2        | stochastic_complexity.py error_coding.py 	|
 | 3        | N/A                                    	|
-| 4        | N/A                                    	|
+| 4        | problem1.py                                    	|
 | 5        | N/A                                    	|
 | 6        | N/A                                    	|
 | 7        | N/A                                    	|
@@ -15,5 +15,5 @@ Homework and Project codes for ECE 592
 | 1        | group_testing.m 				|
 | 2        | mergesort.py merge.py                      |
 | 3        | toyExample.py realPrices.py                |
-| 4        | N/A                                    	|
+| 4        | imageCompress.py                                    	|
 | 5        | N/A                                    	|
