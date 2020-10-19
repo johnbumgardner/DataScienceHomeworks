@@ -9,6 +9,8 @@ Created on Sun Oct 11 17:11:23 2020
 import matplotlib.image as mpimg 
 import matplotlib.pyplot as plt
 from sklearn import cluster
+from collections import Counter
+import math
 
 #%% Task 1: Load an Image
 
@@ -76,7 +78,19 @@ plt.imshow(clusteredImg[500:700, 500:700])
 
 
 #%% Task 5 - Better Compression
+clusterUseCount = Counter(clusterLabels)
 
+# For the task 2 example...
+probs = []
+for i in range(C):
+    tempProb = clusterUseCount[i] / (M*N / (P**2))
+    tempProb /= (P**2) #Divide by P^2 since the clusterUseCount counted every pixel instead of patches
+    probs.append(tempProb)
+    
+tempH = 0 
+for p in probs:
+    tempH += p * math.log2(p)
+H = -tempH #Entropy equation!
 
-
-
+R = H / (P**2)
+print("R using the Task 2 Example is {}".format(R))
