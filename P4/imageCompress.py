@@ -95,11 +95,11 @@ while ((x < M) and (y < M)):
         x = 0
         y += P
 
-R_list = [2, 4, 6, 8, 10]
+R_list = [0.2, 0.4, 0.6, 0.8, 1.0]
 D_list = []
 C_list = []
 for i in R_list:
-    new_C = 2**(i*(P**2))
+    new_C = round(2**(i*(P**2)))
     C_list.append(new_C)
     x, y, z = img.shape
     img2D = img.reshape(x*y, z)
@@ -111,11 +111,19 @@ for i in R_list:
     clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
     D_list.append(distortion(img, clusteredImg, M, N))
 
+# Plot rate vs distortion
+plt.figure(5)
+plt.title("Rate vs Distortion Task 3")
+plt.xlabel("Rate")
+plt.ylabel("Distortion")
+plt.plot(R_list, D_list)
+
+
 #%% Task 4 - Patch Size
-P_set = [2 ,4 ,8 ,16] #Initial patch size, so 2x2 = 4 pixels per patch
-patch_P = []
-patches = []
+P_set = [2 ,4 ,8] #Initial patch size, so 2x2 = 4 pixels per patch
+
 for P in P_set:
+    patches = []
     x = 0 #Count up through the patches, highest index will be M-1 = N-1
     y = 0
     while ((x < M) and (y < M)):
@@ -126,22 +134,28 @@ for P in P_set:
         if (x >= M):
             x = 0
             y += P
-    patch_P.append(patches)
-R = 1
-D_list = []
-C_list = []
-for P in P_set:
-    new_C = 2**(R*(P**2))
-    C_list.append(new_C)
-    x, y, z = img.shape
-    img2D = img.reshape(x*y, z)
-    kmeansCluster = cluster.KMeans(n_clusters = new_C)
-    kmeansCluster.fit(img2D)
-    clusterCenters = kmeansCluster.cluster_centers_
-    clusterLabels = kmeansCluster.labels_
-
-    clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
-    D_list.append(distortion(img, clusteredImg, M, N))
+    
+    R_list = [0.2, 0.4, 0.6, 0.8, 1.0]
+    D_list = []
+    C_list = []
+    for i in R_list:
+        new_C = round(2**(i*(P**2)))
+        C_list.append(new_C)
+        x, y, z = img.shape
+        img2D = img.reshape(x*y, z)
+        kmeansCluster = cluster.KMeans(n_clusters = new_C)
+        kmeansCluster.fit(img2D)
+        clusterCenters = kmeansCluster.cluster_centers_
+        clusterLabels = kmeansCluster.labels_
+    
+        clusteredImg = clusterCenters[clusterLabels].reshape(x,y,z).astype('uint8')
+        D_list.append(distortion(img, clusteredImg, M, N))
+        
+    plt.figure()
+    plt.title("Rate vs Distortion Task 4, P = {}".format(P))
+    plt.xlabel("Rate")
+    plt.ylabel("Distortion")
+    plt.plot(R_list, D_list)
 
 
 #%% Task 5 - Better Compression
