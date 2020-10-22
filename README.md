@@ -6,7 +6,7 @@ Homework and Project codes for ECE 592
 | 2        | stochastic_complexity.py error_coding.py 	|
 | 3        | N/A                                    	|
 | 4        | problem1.py                                    	|
-| 5        | N/A                                    	|
+| 5        | classification.py                                   	|
 | 6        | N/A                                    	|
 | 7        | N/A                                    	|
 
