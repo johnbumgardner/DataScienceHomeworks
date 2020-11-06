@@ -7,8 +7,7 @@ Homework and Project codes for ECE 592
 | 3        | N/A                                    	|
 | 4        | problem1.py                                    	|
 | 5        | classification.py                                   	|
-| 6        | N/A                                    	|
-| 7        | N/A                                    	|
+| 6        | hw6.m                                    	|
 
 | Projects | Associated Files                       	|
 |----------|----------------------------------------	|
@@ -16,4 +15,8 @@ Homework and Project codes for ECE 592
 | 2        | mergesort.py merge.py                      |
 | 3        | toyExample.py realPrices.py                |
 | 4        | imageCompress.py                                    	|
-| 5        | N/A                                    	|
+
+|Final Project | Associated Files                   |
+|--------------|---------------------------------- |
+|NBA           | basketball.py                     |
+|              | examples.py                       |
