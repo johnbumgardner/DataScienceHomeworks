@@ -21,16 +21,9 @@ from nba_api.stats.endpoints import leaguestandingsv3
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
-#%% Cool Functions
-def yearConvert(startYear):
-    #Given year like 2003, returns "2003-04" for use in file calling
-    ans = str(startYear) + "-"
-    secondYear = startYear + 1 - 2000
-    if secondYear < 10: #Its a single digit
-        ans += "0"
-    ans += str(secondYear)
-    return ans
+from functions import yearConvert
 
 #%% nba_api Examples
 career = playercareerstats.PlayerCareerStats(player_id='203076')
@@ -72,7 +65,7 @@ for year in range(2000,2020): #Search for the big kiwi in all data
             stevo = row
             stevo["Year"] = yearConvert(year)
             stevosAdvanced = stevosAdvanced.append(stevo, ignore_index=True)
-            
+print("Steven Adams' Advanced Stats:")            
 print(stevosAdvanced[['Year','Age','WS/48','VORP']])
             
 # Plot how well OKC has done in playoffs every year
@@ -99,3 +92,12 @@ plt.xticks(yearKeys, labels=yearLabels) #Force x ticks to be integers
 plt.ylabel("Rank 1-16")
 
 
+#%% Create the allRegularSeasonStandings dictionary for use in basketball.py
+allRegularSeasonStandings = {}
+for year in range(2000,2020):
+    time.sleep(0.6)
+    standings = leaguestandingsv3.LeagueStandingsV3(season=yearConvert(year))
+    standingsdata = standings.get_data_frames()[0]
+    allRegularSeasonStandings[yearConvert(year)] = standingsdata
+
+np.save("allRegularSeasonStandings.npy", allRegularSeasonStandings)
