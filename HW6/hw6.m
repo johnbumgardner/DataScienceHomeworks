@@ -42,14 +42,15 @@ dist9 = distortion(img, uncompressed_9);
 
 function dist = distortion(originalImg, newImg)
     factor = 1 / (2048*2048);
-    sum = 0;
-    for i = 1:2048
-        for j = 1:2048
-            sum = sum + (originalImg(i,j) - newImg(i,j))^2;
-        end
-    end
-    disp(sum)
-    dist = factor * sum;
+    totalErrors = 0;
+    %for i = 1:2048
+    %    for j = 1:2048
+    %        sum = sum + (originalImg(i,j) - newImg(i,j))^2;
+    %    end
+    %end
+    totalErrors = sum((originalImg-newImg).^2, "all");
+    disp(totalErrors)
+    dist = factor * totalErrors;
     
 end
     
